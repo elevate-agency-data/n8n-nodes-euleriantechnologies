@@ -1,0 +1,20 @@
+{
+  "node": "n8n-nodes-euleriantechnologies.EulerianTechnologies",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": [
+    "Eulerian Technologies"
+  ],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://doc.api.eulerian.com/"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://doc.api.eulerian.com/"
+      }
+    ]
+  }
+}
