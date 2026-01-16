@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-euleriantechnologies",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Node N8N to interact with Eulerian Technologies",
   "license": "MIT",
   "homepage": "https://github.com/elevate-agency-data/n8n-nodes-euleriantechnologies",
