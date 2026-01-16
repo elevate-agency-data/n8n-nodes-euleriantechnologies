@@ -180,8 +180,14 @@ This node supports the following operations within Eulerian Technologies:
         - Gets sample models
         - Get sample distribution datapoints
         - Simulates a model on a provided dataset
-    * **Single Touch Attribut**
+    * **Single Touch Attribution**
         - Gets all the entries
+    * **View Augmented**
+        - Disables custom weights linked to a model for default ones
+        - Shows the configured weights
+        - Shows the default configured weights
+        - Shows the epc used for all augmented models
+        - Updates and customizes weights
 * **CMP**
     * **Category**
         - Checks if a collectorconfigpmcategory name exists

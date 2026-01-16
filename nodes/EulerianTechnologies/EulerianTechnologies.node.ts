@@ -63,6 +63,7 @@ export class EulerianTechnologies implements INodeType {
           { name: 'Attribution - MMM DataSource', value: 'attributionMMMDataSource', description: 'This API allows you to manage the mmmdatasource' },
           { name: 'Attribution - Multi-Touch Attribution', value: 'attributionMultiTouchAttribution', description: 'This API allows you to interact with Eulerian Multi-Touch Attribution engine, MTA' },
           { name: 'Attribution - Single Touch Attribution', value: 'attributionSingleTouchAttribution', description: 'This API allows you to manage the single touch attribution rules' },
+          { name: 'Attribution - View Augmented', value: 'attributionViewAugmented', description: 'This API allows you to manage the data-driven augmented models linked to attribution models' },
           { name: 'CMP - Category', value: 'cmpCategory', description: 'This API allows you to manage the categories to which you can link ETM TMS tags a be able to retrieve customer consent' },
           { name: 'CMP - Category Language', value: 'cmpCategoryLanguage', description: 'This API allows you to manage the text describing categories per language' },
           { name: 'CMP - Server2Server DataConnector', value: 'cmpServer2ServerDataConnector', description: 'This API allows you to manage links between dataconnectors and CMP categories' },
@@ -523,6 +524,21 @@ export class EulerianTechnologies implements INodeType {
             { name: 'Get All the Entries', value: 'attributionSingleTouchAttributionAllEntriesGet', action: 'Gets all the entries', description: 'This query will retrieve all the available rules without pagination or filtering' }
         ],
         default: 'attributionSingleTouchAttributionAllEntriesGet',
+      },
+			{
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: { show: { resource: ['attributionViewAugmented'] } },
+        options: [
+            { name: 'Disable Custom Weights Linked to a Model for Default Ones', value: 'attributionViewAugmentedDisableCustomWeightsLinkedToAModelForDefaultOnesGet', action: 'Disables custom weights linked to a model for default ones', description: 'This query will allow you reset the custom weights linked to a model and use the default ones defined in the platform' },
+            { name: 'Show the Configured Weights', value: 'attributionViewAugmentedShowTheConfiguredWeightsGet', action: 'Shows the configured weights', description: 'This query will allow you to show the custom weights configured for a given model' },
+            { name: 'Show the Default Configured Weights', value: 'attributionViewAugmentedShowDefaultConfiguredWeightsGet', action: 'Shows the default configured weights', description: 'This query will allow you to show the default weights configured for a given model, you can override them by using the update_weights API endpoint' },
+            { name: 'Show the EPC Used for ALL Augmented Models', value: 'attributionViewAugmentedShowEPCUsedForAllAugmentedModelsGet', action: 'Shows the epc used for all augmented models', description: 'This query will allow you to show all the EPC connectors that are used for all augmented models' },
+            { name: 'Update and Customize Weights', value: 'attributionViewAugmentedUpdateAndCustomizeWeightsGet', action: 'Updates and customizes weights', description: 'This query will allow you to update and customize the weights for a given model' }
+        ],
+        default: 'attributionViewAugmentedDisableCustomWeightsLinkedToAModelForDefaultOnesGet',
       },
 			{
         displayName: 'Operation',
@@ -3142,6 +3158,18 @@ export class EulerianTechnologies implements INodeType {
             description: 'ID of the S2S connector you want to filter one, you can provide multiple values',
             type: 'string',
             default: ''
+          },
+          {
+            displayName: 'Datatype',
+            name: 'datatype',
+            type: 'options',
+            options: [
+              { name: 'Click', value: 'click'},
+              { name: 'Direct Access', value: 'da'},
+              { name: 'Impressions', value: 'view'}
+            ],
+            default: 'click',
+            description: 'The datatype to be impacted by the provided weight'
           },
           {
             displayName: 'Date',
@@ -6657,6 +6685,13 @@ export class EulerianTechnologies implements INodeType {
             default: ''
           },
           {
+            displayName: 'Weight',
+            name: 'weight',
+            description: 'Provide the value of the weight',
+            type: 'string',
+            default: ''
+          },
+          {
             displayName: 'With Action',
             name: 'with-action',
             description: 'Conversion tracking',
@@ -8227,6 +8262,30 @@ export async function executeItem(this: IExecuteFunctions, i: number): Promise<I
         case 'attributionSingleTouchAttributionAllEntriesGet':
           if (!site) { throw new ApplicationError('Site is required'); }
           endpointPath += `/ea/v2/ea/${site}/db/view/get_all_name.json${queryString}`;
+          break;
+      }
+      break;
+    case 'attributionViewAugmented':
+      switch (operation) {
+        case 'attributionViewAugmentedDisableCustomWeightsLinkedToAModelForDefaultOnesGet':
+          if (!site) { throw new ApplicationError('Site is required'); }
+          endpointPath += `/ea/v2/ea/${site}/db/viewaugmented/reset_weights.json${queryString}`;
+          break;
+        case 'attributionViewAugmentedShowTheConfiguredWeightsGet':
+          if (!site) { throw new ApplicationError('Site is required'); }
+          endpointPath += `/ea/v2/ea/${site}/db/viewaugmented/show_weights.json${queryString}`;
+          break;
+        case 'attributionViewAugmentedShowDefaultConfiguredWeightsGet':
+          if (!site) { throw new ApplicationError('Site is required'); }
+          endpointPath += `/ea/v2/ea/${site}/db/viewaugmented/default_weights.json${queryString}`;
+          break;
+        case 'attributionViewAugmentedShowEPCUsedForAllAugmentedModelsGet':
+          if (!site) { throw new ApplicationError('Site is required'); }
+          endpointPath += `/ea/v2/ea/${site}/db/viewaugmented/linked_job.json${queryString}`;
+          break;
+        case 'attributionViewAugmentedUpdateAndCustomizeWeightsGet':
+          if (!site) { throw new ApplicationError('Site is required'); }
+          endpointPath += `/ea/v2/ea/${site}/db/viewaugmented/update_weights.json${queryString}`;
           break;
       }
       break;
